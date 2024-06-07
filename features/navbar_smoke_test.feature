@@ -4,18 +4,20 @@ Feature: Navigation bar on every page
     Scenario Outline: Click links
         Given I am not logged in
         When I open "<route>" page
-        Then the page should load successfully
+        Then the page should load successfully and show the title "<title>"
 
     Examples:
-    | /news |
-    | /sales |
-    | /users |
-    | /masterlist |
-    | /myos |
-    | /raffles |
-    | /reports/bug-reports |
-    | /world |
-    | /world/info |
-    | /prompts |
-    | /shops |
-    | /gallery |
+    | route | title |
+    | /news | News |
+    | /sales | Sales |
+    | /users | User Index |
+    | /masterlist | Character Masterlist |
+    | /myos | MYO Slot Masterlist |
+    | /raffles | Raffles |
+    | /reports/bug-reports | Bug Reports |
+    | /world | World |
+    | /prompts | Prompts |
+    | /shops | Shops |
+    | /gallery | Gallery |
+    | /login | Log In |
+    | /register | Register |

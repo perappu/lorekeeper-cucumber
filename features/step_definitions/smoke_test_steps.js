@@ -1,17 +1,45 @@
 const assert = require('assert');
-const { Given, When, Then } = require('@cucumber/cucumber');
+const { Given, When, Then, After, AfterAll, Status } = require('@cucumber/cucumber');
+const { Builder, By, Capabilities, Key } = require('selenium-webdriver');
 
-Given('I am not logged in', function () {
-      // Write code here that turns the phrase above into concrete actions
-      return 'pending';
-    });
+require("chromedriver");
 
-    When('I open {string} page', function (string) {
-      // Write code here that turns the phrase above into concrete actions
-      return 'pending';
-    });
+// driver setup
+const capabilities = Capabilities.chrome();
+capabilities.set('chromeOptions', { "w3c": false });
+const driver = new Builder().withCapabilities(capabilities).build();
 
-Then('the page should load successfully', function () {
-      // Write code here that turns the phrase above into concrete actions
-      return 'pending';
-    });
+Given('I am not logged in', async function () {
+  await driver.get(LOREKEEPER_URL);
+  // look for a login bottom
+  await driver.manage().setTimeouts({ implicit: 500 });
+  await driver.findElement(By.xpath('//a[contains(., "Login")]'));
+});
+
+When('I open {string} page', async function (string) {
+
+  await driver.manage().setTimeouts({ implicit: 500 });
+  await driver.get(LOREKEEPER_URL + string);
+
+});
+
+Then('the page should load successfully and show the title {string}', async function (string) {
+  // Write code here that turns the phrase above into concrete actions
+  await driver.manage().setTimeouts({ implicit: 500 });
+  await driver.findElement(By.xpath('//h1[contains(., "' + string + '")]'));
+});
+
+After(function (scenario) {
+  if (scenario.result.status === Status.FAILED) {
+      var world = this;
+      return webDriver.takeScreenshot().then(function(screenShot, error) {
+          if (!error) {
+              world.attach(screenShot, "image/png");
+          }
+      });
+  }
+});
+AfterAll(async function () {
+  await driver.quit();
+});
+
