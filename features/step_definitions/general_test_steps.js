@@ -24,9 +24,13 @@ When('I open {string} page', async function (string) {
 });
 
 Then('the page should load successfully and show the title {string}', async function (string) {
-  // Write code here that turns the phrase above into concrete actions
   await driver.manage().setTimeouts({ implicit: 500 });
   await driver.findElement(By.xpath('//h1[contains(., "' + string + '")]'));
+});
+
+When('I click a link that says {string}', async function (string) {
+  await driver.manage().setTimeouts({ implicit: 500 });
+  await driver.findElement(By.xpath('//a[contains(., "' + string + '")]'));
 });
 
 After(function (scenario) {
